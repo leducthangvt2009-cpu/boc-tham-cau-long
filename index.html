@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Badminton Tournament Draw</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">BADMINTON TOURNAMENT</p>
+      <h1>Draw &amp; Bracket</h1>
+    </div>
+    <div id="connectionStatus" class="connection-status">Connecting…</div>
+  </header>
+
+  <main class="container">
+    <section id="loginPanel" class="card login-card">
+      <p class="eyebrow">PLAYER LOBBY</p>
+      <h2>Enter your Player ID</h2>
+      <p class="muted">Use the unique ID supplied by the tournament organizer.</p>
+      <form id="loginForm" class="login-form">
+        <label for="playerId">Player ID</label>
+        <input id="playerId" name="playerId" placeholder="PLAYER_001" autocomplete="off" required>
+        <button class="primary-button" type="submit">Continue</button>
+      </form>
+      <p id="loginMessage" class="message" role="alert"></p>
+    </section>
+
+    <section id="drawPanel" class="card draw-card hidden">
+      <div class="draw-header">
+        <div>
+          <p class="eyebrow">WELCOME</p>
+          <h2 id="playerName">Player</h2>
+          <p id="playerMeta" class="muted"></p>
+        </div>
+        <button id="logoutButton" class="text-button" type="button">Change ID</button>
+      </div>
+
+      <div id="drawClosedNotice" class="notice hidden">The draw is currently closed by the organizer.</div>
+      <div id="alreadyDrawnNotice" class="notice success hidden"></div>
+
+      <div id="drawAction" class="draw-action">
+        <div id="slotDisplay" class="slot-display" aria-live="polite">?</div>
+        <p id="drawStatus" class="draw-status">Your slot is ready to be drawn.</p>
+        <button id="drawButton" class="primary-button draw-button" type="button">Draw my slot</button>
+      </div>
+    </section>
+
+    <section class="bracket-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">LIVE TOURNAMENT TREE</p>
+          <h2>512-slot bracket</h2>
+          <p class="muted">Results update automatically for every connected viewer.</p>
+        </div>
+        <div class="bracket-tools">
+          <button id="zoomOut" class="icon-button" type="button" aria-label="Zoom out">−</button>
+          <span id="zoomValue">100%</span>
+          <button id="zoomIn" class="icon-button" type="button" aria-label="Zoom in">+</button>
+          <button id="resetView" class="secondary-button" type="button">Reset view</button>
+        </div>
+      </div>
+      <div id="bracketViewport" class="bracket-viewport">
+        <div id="bracketCanvas" class="bracket-canvas">
+          <div id="bracketGrid" class="bracket-grid"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Firebase v9 modular SDK is imported from the official CDN in app.js. -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
