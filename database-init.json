@@ -522,61 +522,61 @@
   },
   "players": {
     "PLAYER_001": {
-      "name": "Nguy?n V?n A",
+      "name": "Nguyễn Văn A",
       "isSeed": true,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_002": {
-      "name": "Tr?n Th? B",
+      "name": "Trần Thị B",
       "isSeed": false,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_003": {
-      "name": "L? Minh C",
+      "name": "Lê Minh C",
       "isSeed": true,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_004": {
-      "name": "Ph?m Ho?ng D",
+      "name": "Phạm Hoàng D",
       "isSeed": false,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_005": {
-      "name": "V? Thu E",
+      "name": "Võ Thu E",
       "isSeed": false,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_006": {
-      "name": "?? Qu?c F",
+      "name": "Đỗ Quốc F",
       "isSeed": true,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_007": {
-      "name": "B?i Ng?c G",
+      "name": "Bùi Ngọc G",
       "isSeed": false,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_008": {
-      "name": "Ng? Anh H",
+      "name": "Ngô Anh H",
       "isSeed": false,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_009": {
-      "name": "??ng H?i I",
+      "name": "Đặng Hải I",
       "isSeed": true,
       "hasDrawn": false,
       "slot": null
     },
     "PLAYER_010": {
-      "name": "Ho?ng Linh K",
+      "name": "Hoàng Linh K",
       "isSeed": false,
       "hasDrawn": false,
       "slot": null
