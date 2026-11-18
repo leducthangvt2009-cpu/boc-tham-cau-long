@@ -32,6 +32,8 @@ const viewport = $("bracketViewport");
 
 let currentId = null;
 let currentPlayer = null;
+let playerUnsubscribe = null;
+let playerReady = false;
 let drawIsOpen = false;
 let slotsReady = false;
 let zoom = 1;
@@ -82,7 +84,9 @@ loginForm.addEventListener("submit", async (event) => {
     }
     currentId = id;
     currentPlayer = { id, ...snapshot.val() };
+    playerReady = false;
     renderPlayer();
+    watchPlayer(id);
     hide(loginPanel);
     show(drawPanel);
     setMessage("");
@@ -93,12 +97,25 @@ loginForm.addEventListener("submit", async (event) => {
 });
 
 $("logoutButton").addEventListener("click", () => {
+  if (playerUnsubscribe) { playerUnsubscribe(); playerUnsubscribe = null; }
   currentId = null;
   currentPlayer = null;
+  playerReady = false;
   hide(drawPanel);
   show(loginPanel);
   $("playerId").focus();
 });
+
+// Keep the player record cached and in sync, including draws made in another tab.
+function watchPlayer(id) {
+  if (playerUnsubscribe) playerUnsubscribe();
+  playerUnsubscribe = onValue(ref(db, `players/${id}`), (snapshot) => {
+    if (!snapshot.exists()) return;
+    currentPlayer = { id, ...snapshot.val() };
+    playerReady = true;
+    renderPlayer();
+  });
+}
 
 function renderPlayer() {
   $("playerName").textContent = currentPlayer.name || currentId;
@@ -109,7 +126,7 @@ function renderPlayer() {
 function refreshDrawControls() {
   const drawn = currentPlayer && currentPlayer.hasDrawn === true;
   const closed = !drawIsOpen && !drawn;
-  const loading = !slotsReady;
+  const loading = !slotsReady || !playerReady;
   const closedNotice = $("drawClosedNotice");
   const already = $("alreadyDrawnNotice");
 
@@ -131,7 +148,7 @@ function refreshDrawControls() {
 }
 
 drawButton.addEventListener("click", async () => {
-  if (!currentId || !currentPlayer || !drawIsOpen || !slotsReady || currentPlayer.hasDrawn) return;
+  if (!currentId || !currentPlayer || !drawIsOpen || !slotsReady || !playerReady || currentPlayer.hasDrawn) return;
 
   // Disable before any asynchronous work to prevent accidental double clicks.
   drawButton.disabled = true;
