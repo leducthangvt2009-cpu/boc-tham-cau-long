@@ -153,6 +153,10 @@ async function reserveSlotAtomically(playerId, isSeed) {
   const availableRef = ref(db, "available_slots");
   let reservedSlot = null;
 
+  // Prime the local cache. On a cold cache the transaction callback can receive
+  // null and abort before the SDK ever contacts the server.
+  await get(availableRef);
+
   // This transaction serializes all simultaneous draws against the same node.
   const result = await runTransaction(availableRef, (data) => {
     if (!data || !Array.isArray(data[poolName]) || data[poolName].length === 0) return;
