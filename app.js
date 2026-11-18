@@ -33,6 +33,7 @@ const viewport = $("bracketViewport");
 let currentId = null;
 let currentPlayer = null;
 let drawIsOpen = false;
+let slotsReady = false;
 let zoom = 1;
 let panX = 0;
 let panY = 0;
@@ -57,6 +58,13 @@ onValue(ref(db, ".info/connected"), (snap) => {
 
 onValue(ref(db, "tournament_config/isDrawOpen"), (snap) => {
   drawIsOpen = snap.val() === true;
+  if (currentPlayer) refreshDrawControls();
+});
+
+// Keep the slot pools in the local cache. A transaction started with a cold
+// cache can receive null and abort before the SDK contacts the server.
+onValue(ref(db, "available_slots"), () => {
+  slotsReady = true;
   if (currentPlayer) refreshDrawControls();
 });
 
@@ -101,6 +109,7 @@ function renderPlayer() {
 function refreshDrawControls() {
   const drawn = currentPlayer && currentPlayer.hasDrawn === true;
   const closed = !drawIsOpen && !drawn;
+  const loading = !slotsReady;
   const closedNotice = $("drawClosedNotice");
   const already = $("alreadyDrawnNotice");
 
@@ -112,13 +121,17 @@ function refreshDrawControls() {
   } else {
     hide(already);
     show($("drawAction"));
-    drawButton.disabled = closed;
-    drawStatus.textContent = closed ? "The organizer has not opened the draw." : "Your slot is ready to be drawn.";
+    drawButton.disabled = closed || loading;
+    drawStatus.textContent = closed
+      ? "The organizer has not opened the draw."
+      : loading
+        ? "Loading the slot pools…"
+        : "Your slot is ready to be drawn.";
   }
 }
 
 drawButton.addEventListener("click", async () => {
-  if (!currentId || !currentPlayer || !drawIsOpen || currentPlayer.hasDrawn) return;
+  if (!currentId || !currentPlayer || !drawIsOpen || !slotsReady || currentPlayer.hasDrawn) return;
 
   // Disable before any asynchronous work to prevent accidental double clicks.
   drawButton.disabled = true;
@@ -153,11 +166,8 @@ async function reserveSlotAtomically(playerId, isSeed) {
   const availableRef = ref(db, "available_slots");
   let reservedSlot = null;
 
-  // Prime the local cache. On a cold cache the transaction callback can receive
-  // null and abort before the SDK ever contacts the server.
-  await get(availableRef);
-
   // This transaction serializes all simultaneous draws against the same node.
+  // The onValue listener above keeps the local cache warm for the callback.
   const result = await runTransaction(availableRef, (data) => {
     if (!data || !Array.isArray(data[poolName]) || data[poolName].length === 0) return;
     const slots = [...data[poolName]];
