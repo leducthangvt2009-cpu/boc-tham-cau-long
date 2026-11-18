@@ -5,13 +5,14 @@ import {
 
 // Replace these values with the Firebase Web App configuration from Project settings.
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDI_z8LjPmozHW8n7L4yRZ6-hztRdnVBLQ",
+  authDomain: "boc-tham-cau-long.firebaseapp.com",
+  databaseURL: "https://boc-tham-cau-long-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "boc-tham-cau-long",
+  storageBucket: "boc-tham-cau-long.firebasestorage.app",
+  messagingSenderId: "787098867951",
+  appId: "1:787098867951:web:a77748ee863f9f6f00631a",
+  measurementId: "G-LVHH8DPTPL"
 };
 
 const app = initializeApp(firebaseConfig);
